@@ -785,11 +785,11 @@ Guacamole.Display = function() {
         scheduleTask(function __display_resize() {
 
             // Adjust width when using multiple monitors
-            if (monitorWidth)
+            if (layer === default_layer && monitorWidth)
                 width = monitorWidth;
 
             // Adjust height when using multiple monitors
-            if (monitorHeight)
+            if (layer === default_layer && monitorHeight)
                 height = monitorHeight;
 
             layer.resize(width, height);
