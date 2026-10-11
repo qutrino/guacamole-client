@@ -755,7 +755,8 @@ Guacamole.Display = function() {
     };
 
     /**
-     * Set the current monitor size.
+     * Sets the current monitor size and schedules resizing of the default
+     * layer to those dimensions. The resize is applied on the next flush.
      * 
      * @param {!number} width
      *     The width of the monitor, in pixels.
@@ -765,7 +766,12 @@ Guacamole.Display = function() {
     this.setMonitorSize = function setMonitorSize(width, height) {
         monitorWidth = width;
         monitorHeight = height;
-    }
+
+        // Apply monitor dimensions even if the initial size instruction was
+        // received before this display was created.
+        guac_display.resize(default_layer, width, height);
+
+    };
 
     /**
      * Changes the size of the given Layer to the given width and height.

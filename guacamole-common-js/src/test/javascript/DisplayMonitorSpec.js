@@ -27,9 +27,16 @@ describe('Guacamole.Display monitor dimensions', function DisplayMonitorSpec() {
         display = new Guacamole.Display();
     });
 
+    it('initializes monitor dimensions', function initializeMonitor(done) {
+        display.setMonitorSize(800, 600);
+        display.flush(function monitorInitialized() {
+            expect(display.getWidth()).toBe(800);
+            expect(display.getHeight()).toBe(600);
+            done();
+        });
+    });
 
-    it('preserves offscreen buffer dimensions',
-        function resizeBuffer(done) {
+    it('preserves buffer dimensions', function resizeBuffer(done) {
         var buffer = display.createBuffer();
         display.setMonitorSize(800, 600);
         display.resize(buffer, 2048, 1536);
@@ -40,8 +47,7 @@ describe('Guacamole.Display monitor dimensions', function DisplayMonitorSpec() {
         });
     });
 
-    it('preserves visible child layer dimensions',
-        function resizeChildLayer(done) {
+    it('preserves child layer dimensions', function resizeChildLayer(done) {
         var layer = display.createLayer();
         display.setMonitorSize(800, 600);
         display.resize(layer, 32, 32);
@@ -52,5 +58,14 @@ describe('Guacamole.Display monitor dimensions', function DisplayMonitorSpec() {
         });
     });
 
+    it('constrains desktop dimensions', function resizeDesktop(done) {
+        display.setMonitorSize(800, 600);
+        display.resize(display.getDefaultLayer(), 2720, 1080);
+        display.flush(function desktopResized() {
+            expect(display.getWidth()).toBe(800);
+            expect(display.getHeight()).toBe(600);
+            done();
+        });
+    });
 
 });
